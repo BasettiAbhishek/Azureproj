@@ -30,7 +30,7 @@ namespace Company.Function
 
                 string workspaceId = "26efe585-44c3-43a6-b660-fcb4989a1427";
                 
-                var client = new LogsQueryClient(new DefaultAzureCredential());
+                var client  = new LogsQueryClient(new DefaultAzureCredential());
 
                 Response<LogsQueryResult> result = await client.QueryWorkspaceAsync(
                     workspaceId,
