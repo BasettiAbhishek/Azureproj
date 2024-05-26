@@ -7,6 +7,7 @@ using Azure.Monitor.Query;
 using Azure.Monitor.Query.Models;
 using Azure;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Company.Function
@@ -29,8 +30,8 @@ namespace Company.Function
                 _logger.LogInformation("Starting function execution");
 
                 string workspaceId = "26efe585-44c3-43a6-b660-fcb4989a1427";
-                
-                var client  = new LogsQueryClient(new DefaultAzureCredential());
+
+                var client = new LogsQueryClient(new DefaultAzureCredential());
 
                 Response<LogsQueryResult> result = await client.QueryWorkspaceAsync(
                     workspaceId,
@@ -46,7 +47,7 @@ namespace Company.Function
                 for (int i = 0; i < rowsToLog; i++)
                 {
                     var row = table.Rows[i];
-                    string rowData = string.Join(", ", row.Select(cell => cell.ToString()));
+                    string rowData = string.Join(", ", row.Select(cell => cell?.ToString() ?? "null"));
                     _logger.LogInformation("Row {RowIndex}: {RowData}", i + 1, rowData);
                 }
 
@@ -64,7 +65,7 @@ namespace Company.Function
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while querying logs");
+                _logger.LogError(ex, "An error occurred while querying logs: {Message}", ex.Message);
                 return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
         }
