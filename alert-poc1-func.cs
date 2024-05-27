@@ -27,7 +27,9 @@ namespace Company.Function
         {
             try
             {
-                _logger.LogInformation("Starting function execution");
+                _logger.LogTrace("Starting function execution");
+                _logger.LogWarning("Starting function execution");
+                _logger.LogError("Starting function execution");
 
                 string workspaceId = "26efe585-44c3-43a6-b660-fcb4989a1427";
 
